@@ -9,39 +9,44 @@ import org.springframework.stereotype.Controller;
 
 @Controller
 public class ClientControlller {
+	
 	 @Autowired  
 	 ClientDAO dao;
-	 
+	
+	 // Mapeia Rota para a Página de Criação de Clientes
 	 @RequestMapping("/clientform")
 	 public ModelAndView showForm() {
 		 return new ModelAndView("clientform", "command", new Client());  
 	 }
 	 
-	 
+	 // Salva cliente
+	 // Caso o CNPJ não esteja cadastrado cria um novo cliente, caso contrario atualiza.
 	 @RequestMapping(value="/save", method=RequestMethod.POST)
 	 public ModelAndView save(@ModelAttribute Client c) {
-		 dao.save(c);
+		 if(dao.getClientByCnpj(c.getCnpj())!=null) {
+			 dao.update(c);
+		 }
+		 else {
+			 dao.save(c);
+		 }
 		 return new ModelAndView("redirect:/clients");
 	 }
 	 
+	 // Mapeia Rota para a Página de Listagem de Clientes.
 	 @RequestMapping("/clients") 
 	 public ModelAndView viewClients() {
 		 List<Client> clients = dao.getClients();
 		 return new ModelAndView("clients","clients",clients);
 	 }
 	 
+	 // Mapeia Rota para a Página de Alteração de clientes.
 	 @RequestMapping(value="/editclient/{cnpj}")
 	 public ModelAndView edit(@PathVariable String cnpj) {
 		 Client c = dao.getClientByCnpj(cnpj);
 		 return new ModelAndView("editclientform","command", c);
 	 }
 	 
-	 @RequestMapping("/editsave")
-	 public ModelAndView editSave(@ModelAttribute Client c) {
-		 dao.update(c);
-		 return new ModelAndView("redirect:/clients");
-	 }
-	 
+	 // Deleta cliente conforme o cnpj passado como parâmetro.
 	 @RequestMapping(value="deleteclient/{cnpj}", method = RequestMethod.GET)
 	 public ModelAndView delete(@PathVariable String cnpj) {
 		 dao.delete(cnpj);

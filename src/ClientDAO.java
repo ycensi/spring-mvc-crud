@@ -12,7 +12,8 @@ public class ClientDAO {
 	public void setTemplate(JdbcTemplate template) {  
 	    this.template = template;  
 	}  
-		
+	
+	// Cria um novo cliente no banco de dados.
 	public int save(Client c) {
 		String sql = "INSERT INTO Client(cnpj,name,contactName,maxBillingTerm,companyType,phone1,phone2,contactEmail,billingEmail,financialEmail) "
 				+ "VALUES (?,?,?,?,?,?,?,?,?,?)";
@@ -20,6 +21,7 @@ public class ClientDAO {
 				c.getPhone1(), c.getPhone2(), c.getContactEmail(), c.getBillingEmail(), c.getFinancialEmail());
 	}
 	
+	// Atualiza um cliente no banco de dados.
 	public int update(Client c) {
 		String sql = "UPDATE Client SET name=?, contactName=?, maxBillingTerm=?, "
 				+ "companyType=?, phone1=?, phone2=?, contactEmail=?, billingEmail=?, financialEmail=? "
@@ -28,16 +30,19 @@ public class ClientDAO {
 				c.getPhone1(), c.getPhone2(), c.getContactEmail(), c.getBillingEmail(), c.getFinancialEmail(), c.getCnpj());
 	}
 	
+	// Exclui um cliente do banco de dados.
 	public int delete(String cnpj) {
 		String sql = "DELETE FROM Client WHERE cnpj = ?";
 		return this.template.update(sql, cnpj);
 	}
 	
+	// Pesquisa um cliente com base no CNPJ.
 	public Client getClientByCnpj(String cnpj) {
 		String sql = "SELECT * FROM Client WHERE cnpj = ?";
 		return template.queryForObject(sql,new Object[]{cnpj} , new BeanPropertyRowMapper<Client>(Client.class));
 	}
 	
+	// Retorna a lista de todos os clientes.
 	public List<Client> getClients() {
 		
 		String sql = "SELECT cnpj, name, contactName, maxBillingTerm, creationDate, companyType, phone1, phone2, contactEmail, "

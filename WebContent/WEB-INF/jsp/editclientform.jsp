@@ -10,10 +10,9 @@
 	}
 </style>  
   
-  
  <div class="container formCli">
  	<h2>Editar Cliente</h2>	
- 	<form:form method="post" action="/SpringMVCCRUD/editsave"> 
+ 	<form:form method="post" action="/SpringMVCCRUD/save"> 
  		<div class="row" style="display:none;">
 			<div class="col-md-4">
 				<div class="input-group">
@@ -42,7 +41,7 @@
 			<div class="col-md-4">
 				<div class="input-group">
 					<label for="maxBillingTerm">Prazo Máximo de Faturamento</label>
-					<form:input path="maxBillingTerm" type="number" required="true" type="number" max="999" class="form-control" />
+					<form:input path="maxBillingTerm" type="number" required="true" max="999" class="form-control" />
 				</div>
 			</div>
 		</div>
